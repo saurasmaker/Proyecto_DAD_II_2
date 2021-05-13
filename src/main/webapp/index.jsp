@@ -31,6 +31,7 @@
 		<script src="js/jquery-1.12.4.min.js" type="text/javascript"></script>
 		<script src="js/crudVideogames.js" type="text/javascript"></script>
 		<script src="js/crudCategories.js" type="text/javascript"></script>
+		<script src="js/crudVideogamesCategories.js" type="text/javascript"></script>
 		<script src="js/adminCRUD.js" type="text/javascript"></script>
 		
 		<title>Práctica 2 - REST</title>

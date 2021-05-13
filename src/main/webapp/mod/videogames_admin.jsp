@@ -114,11 +114,16 @@
     
 	<div class = "col-6">
 	
-		<form id = "add-videogamecategory-form" class = "form-group" action = "<%= request.getContextPath() %>/Controller" method = "POST">		
-        	<label for="videogame-input-category">Elige una categoría: </label>
-			<p><select id = "videogame-input-category" class="form-control" name = "<%=VideogameCategory.ATR_VIDEOGAMESCATEGORIES_CATEGORYID %>">
+		<form id = "add-videogamecategory-form" class = "form-group">
+			<input id="videogamecategory-input-id" type="hidden" value='-1'/>
+			
+			<input id="videogamecategory-input-videogameid" type="hidden"/>
+        	
+        	<label for="videogamecategory-input-categoryid">Elige una categoría: </label>
+			<p><select id = "videogamecategory-input-categoryid" class="form-control" name = "<%=VideogameCategory.ATR_VIDEOGAMESCATEGORIES_CATEGORYID %>">
 			  	<option value="none" selected>Categoría...</option>
-			</select></p>												
+			</select></p>	
+														
             <p><input id = "input-send-videogamecategory" type = "submit" class="btn btn-primary" value = "Añadir categoria a "></p>
         </form>
     </div>
@@ -129,16 +134,7 @@
     	<div class = "table-responsive"  style = " max-height: 600px !important; overflow: auto;">
 		 	<table class="table table-striped">
 		 		<tbody>
-		 			<tr>
-		 				<td>category name</td>	
-		 			</tr>
-		 			<tr>
-	 					<td>
-							<form action = "<%= request.getContextPath() %>/Controller" method = "POST">
-                           		<input type="hidden" name = "<%=VideogameCategory.ATR_VIDEOGAMESCATEGORIES_ID %>" value = "">
-                           		<button type="submit" class="btn btn-danger">Eliminar</button>
-                        	</form>
-                        </td>
+		 			<tr id="tr-table-videogamescategories">
 		 			</tr>
 		 		</tbody>
 		 	</table>

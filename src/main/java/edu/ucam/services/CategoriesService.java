@@ -40,10 +40,8 @@ public class CategoriesService {
 				
 		JSONObject jsonRespuesta = new JSONObject();
 		
-		System.out.println("Running 'getCategoriesList' command...");
 		for(Category category: categories){
 			jsonRespuesta.append("categories", category.toJSONObject());	
-			System.out.println(category.toJavaScriptFunction());
 		}
 		
 		return Response.status(201).entity(jsonRespuesta.toString()).build();
@@ -103,7 +101,6 @@ public class CategoriesService {
 				jsonResponse.append("result", "Error Updating");
 			}
 		}
-		
 		
 		jsonResponse.put("category", category.toJSONObject());
 				

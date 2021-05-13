@@ -32,7 +32,7 @@ public class VideogameCategory implements IMyPojo{
 		this.categoryId = categoryId;
 	}
 	
-	public VideogameCategory(JSONObject jObject) {
+	public VideogameCategory(JSONObject jObject) {		
 		this.id = jObject.getString("id");
 		this.videogameId = jObject.getString("videogameId");
 		this.categoryId = jObject.getString("categoryId");
@@ -45,7 +45,9 @@ public class VideogameCategory implements IMyPojo{
 	 */
 	@Override
 	public String toJavaScriptFunction() {
-		// TODO Auto-generated method stub
+
+		
+		
 		return null;
 	}
 
@@ -58,7 +60,7 @@ public class VideogameCategory implements IMyPojo{
 		jObject.put("id", id);
 		jObject.put("videogameId", videogameId);
 		jObject.put("categoryId", categoryId);
-		
+				
 		return jObject;
 	}
 	

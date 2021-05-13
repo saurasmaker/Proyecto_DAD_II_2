@@ -40,10 +40,8 @@ public class VideogamesService {
 				
 		JSONObject jsonRespuesta = new JSONObject();
 		
-		System.out.println("Running 'getVideogamesList' command...");
 		for(Videogame videogame: videogames){
 			jsonRespuesta.append("videogames", videogame.toJSONObject());	
-			System.out.println(videogame.toJavaScriptFunction());
 		}
 		
 		return Response.status(201).entity(jsonRespuesta.toString()).build();
@@ -78,7 +76,6 @@ public class VideogamesService {
 		}			
 		jsonReceived = new JSONObject(sb.toString());
 		videogame = new Videogame(jsonReceived);
-		
 		
 		/*
 		 * Add

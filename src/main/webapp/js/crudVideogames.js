@@ -1,3 +1,6 @@
+var videogameId;
+
+
 function addVideogame(sendInfo){
 
     $.ajax({
@@ -106,14 +109,11 @@ function loadVideogame(id, name, description, releaseDate, stock, purchasePrice,
     tr.appendChild(td);
     
     tbody.appendChild(tr);
-
 }
 
 
 $(document).ready(function(){
     
-    
-
     $("#input-send-videogame").click(function(){ 
         
         var sendInfo = {

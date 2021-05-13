@@ -90,17 +90,16 @@ function updateUser(id, username, email, password, signUpDate, signUpTime, lastS
 }
 
 function updateVideogame(id, name, description, releaseDate, stock, purchasePrice, rentalPrice){	
-	
-	displayAdminPage();
-	
+
+    //Blocks
 	document.getElementById("create-videogame-form").style.display = "none";
     document.getElementById("update-videogame-form").style.display = "block";
     
     document.getElementById("add-videogamecategory-form").style.display = "block";
     document.getElementById("videogamecategory-title").style.display = "block";
     document.getElementById("table-videogamescategories").style.display = "block";
-    document.getElementById("input-send-videogamecategory").value = "Anadir categoria a '" + name + "'";
-    
+  
+    //Inputs
     document.getElementById("videogame-input-update-id").value = id;
     document.getElementById("videogame-input-update-name").value = name;
     document.getElementById("videogame-input-update-description").value = description;
@@ -108,6 +107,61 @@ function updateVideogame(id, name, description, releaseDate, stock, purchasePric
     document.getElementById("videogame-input-update-stock").value = stock;    
     document.getElementById("videogame-input-update-purchaseprice").value = parseFloat(purchasePrice).toFixed(2);
     document.getElementById("videogame-input-update-rentalprice").value = parseFloat(rentalPrice).toFixed(2);  
+
+    document.getElementById("input-send-videogamecategory").value = "Anadir categoria a '" + name + "'";
+    document.getElementById("videogamecategory-input-videogameid").value = id;
+
+
+    //Load Categories of Videogame
+    var trTableVC = document.getElementById("tr-table-videogamescategories");
+    while (trTableVC.firstChild) {
+        trTableVC.removeChild(trTableVC.firstChild);
+    }
+
+    jQuery.each(videogameCategoryList, function(i, videogameCategory) {
+
+        var td = document.createElement("td");
+        td.id = 'td-videogamecategory-' + videogameCategory.id;
+        
+        var deleteButton = document.createElement('button');
+        deleteButton.id = 'delete-videogamecategory-' + videogameCategory.id;
+        deleteButton.value = 'Eliminar';  
+        deleteButton.innerHTML = 'Eliminar';
+        deleteButton.classList.add('btn');
+        deleteButton.classList.add('btn-danger');
+        deleteButton.onclick = function () {
+            $.ajax({
+                url: 'rest/videogamescategories/' + videogameCategory.id,
+                type: 'DELETE',
+                dataType: "json", 
+                success: function(result) {
+                    document.getElementById('td-videogamecategory-' + videogameCategory.id).remove();
+                }
+            });
+        };
+        
+        var p1 = document.createElement("p");
+        p1.innerHTML = videogameCategory.categoryId;
+        jQuery.each(categoriesList, function(i, category) {
+            if(category.id === videogameCategory.categoryId)
+                p1.innerHTML = category.name;
+        });
+        td.appendChild(p1);
+
+        var p2 = document.createElement("p");
+        p2.appendChild(deleteButton);
+        td.appendChild(p2);
+        
+        trTableVC.appendChild(td);
+
+    });
+
+
+    var td = document.getElementById('td');
+    td.innerHTML = id;
+    tr.appendChild(td);
+
+
 }
 
 

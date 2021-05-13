@@ -1,3 +1,5 @@
+var categoriesList;
+
 function addCategory(sendInfo){
 
     $.ajax({
@@ -18,7 +20,6 @@ function addCategory(sendInfo){
         data:  JSON.stringify(sendInfo)
             
     });
-
 }
 
 
@@ -29,7 +30,7 @@ function loadCategory(id, name, description){
     var tr = document.createElement('tr'); 
     tr.id = 'tr-category-' + id; 
 
-    var selectInput = document.getElementById('videogame-input-category');
+    var selectInput = document.getElementById('videogamecategory-input-categoryid');
     var option = document.createElement('option');
     option.value = id;
     option.innerHTML = name;
@@ -89,6 +90,7 @@ function loadCategory(id, name, description){
     tr.appendChild(td);
     
     tbody.appendChild(tr);
+    categoryId = id;
 }
 
 
@@ -108,8 +110,7 @@ $(document).ready(function(){
             id: $('#category-input-update-id').val(), name: $('#category-input-update-name').val(), description: $('#category-input-update-description').val(),
         };
 
-        addCategory(sendInfo);
-    
+        addCategory(sendInfo);  
     });
 
     
@@ -118,6 +119,7 @@ $(document).ready(function(){
         type: 'GET',
         dataType: "json",
         success: function(result) {
+            categoriesList = result.categories;
             jQuery.each(result.categories, function(i, val) {
                 loadCategory(
                     val.id, val.name, val.description
