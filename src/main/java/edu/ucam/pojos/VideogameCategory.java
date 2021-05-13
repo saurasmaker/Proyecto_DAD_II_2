@@ -32,7 +32,11 @@ public class VideogameCategory implements IMyPojo{
 		this.categoryId = categoryId;
 	}
 	
-	
+	public VideogameCategory(JSONObject jObject) {
+		this.id = jObject.getString("id");
+		this.videogameId = jObject.getString("videogameId");
+		this.categoryId = jObject.getString("categoryId");
+	}
 	
 
 

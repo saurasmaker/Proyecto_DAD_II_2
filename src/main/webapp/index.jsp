@@ -50,7 +50,7 @@
 				</div>
 				
 				<jsp:include page="mod/videogames_admin.jsp"/>
-				<!--<jsp:include page="mod/categories_admin.jsp"/>-->
+				<jsp:include page="mod/categories_admin.jsp"/>
 				
 			</div>
 			

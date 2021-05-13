@@ -3,7 +3,7 @@ package edu.ucam.services;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Hashtable;
+import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,7 +27,7 @@ public class CategoriesService {
 	@DefaultValue("") @QueryParam("token") String token;
 	
 	
-	private static Hashtable <String, Category> categories = new Hashtable<String, Category>();	
+	private static ArrayList <Category> categories = new ArrayList<Category>();	
 	
 	
 	/*
@@ -41,7 +41,7 @@ public class CategoriesService {
 		JSONObject jsonRespuesta = new JSONObject();
 		
 		System.out.println("Running 'getCategoriesList' command...");
-		for(Category category: categories.values()){
+		for(Category category: categories){
 			jsonRespuesta.append("categories", category.toJSONObject());	
 			System.out.println(category.toJavaScriptFunction());
 		}
@@ -55,15 +55,16 @@ public class CategoriesService {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addFinca(InputStream incomingData) {
+	public Response createCategory(InputStream incomingData) {
 		
+		/*
+		 * Prepare variables
+		 */
 		Category category;
 		JSONObject jsonReceived;
 		JSONObject jsonResponse = new JSONObject();
 		StringBuilder sb = new StringBuilder();
-		
-		
-		System.out.println("Running 'createCategory' command...");
+			
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
 			String line = null;
@@ -78,23 +79,38 @@ public class CategoriesService {
 		jsonReceived = new JSONObject(sb.toString());
 		category = new Category(jsonReceived);
 		
+		
 		/*
-		 * Check if already exists, adding video game in the table if not. 
+		 * Add
 		 */
-		if(categories.get(category.getId())==null){
-			
-			categories.put(category.getId(), category);
-			jsonResponse.put("category", category.toJSONObject());
-			
-			System.out.println("Category added succesfully.");
-			
-			return Response.status(201).entity(jsonResponse.toString()).build();
-		}else{
-			System.out.println("The category already exists");
-			jsonResponse.put("result", "Te category already exists");
-			return Response.status(422).entity(jsonResponse.toString()).build();
+		if(categories.size() == 0) {
+			category.setId("1");
+			categories.add(category);
 		}
+		else if(category.getId().equals("-1")) {
+			category.setId(((Integer) (Integer.parseInt(categories.get(categories.size()-1).getId()) + 1)).toString());
+			categories.add(category);
+		}
+		
+		
+		/*
+		 * Update
+		 */
+		else {
+			try {
+				categories.set(getCategoryPosition(category.getId()), category);
+			} catch(Exception t) {
+				jsonResponse.append("result", "Error Updating");
+			}
+		}
+		
+		
+		jsonResponse.put("category", category.toJSONObject());
+				
+		return Response.status(201).entity(jsonResponse.toString()).build();
 	}
+	
+	
 	
 	@DELETE
 	@Path("/{id}")
@@ -103,8 +119,7 @@ public class CategoriesService {
 		
 		JSONObject jsonRespuesta = new JSONObject();
 		
-		System.out.println("Runnning 'deleteCategory' command...");
-		categories.remove(categoryId);
+		try { categories.remove(getCategoryPosition(categoryId)); } catch(Exception t) { jsonRespuesta.append("result", "Error Removing"); }
 		jsonRespuesta.append("result", "Deleted");	
 
 		return Response.ok()
@@ -112,6 +127,22 @@ public class CategoriesService {
 				.entity(jsonRespuesta.toString())
 				.build();
 	}
+	
+	
+	
+	/*
+	 * Tool methods
+	 */
+	private int getCategoryPosition(String id) {
+		
+		for(int i = 0; i < categories.size(); ++i)
+			if(categories.get(i).getId().equals(id)) {
+				return i;
+			}	
+		
+		return -1;
+	}
+
 
 }
 

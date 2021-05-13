@@ -13,10 +13,9 @@
 	  
 	<div class = "col-lg-4 col-md-6 col-sm-12">
 	
-      	<form id = "create-category-form" class = "form-group" action = "<%= request.getContextPath() %>/Controller" method = "POST">
+      	<form id = "create-category-form" class = "form-group">
 						
-			<label for="category-input-id">ID: </label>
-			<p><input id = "category-input-id" type = "text" class="form-control" placeholder = "Identificador de la categoría" name = "<%=Category.ATR_CATEGORY_ID %>" readonly></p>
+			<p><input id = "category-input-id" type = "hidden" value="-1" class="form-control" placeholder = "Identificador de la categoría" name = "<%=Category.ATR_CATEGORY_ID %>" required></p>
 
 		    <label for="category-input-name">Nombre: </label>
 			<p><input id = "category-input-name" type = "text" class="form-control" placeholder = "Introduce el nombre de la categoría..." name = "<%=Category.ATR_CATEGORY_NAME %>" required></p>
@@ -24,12 +23,12 @@
 			<label for="category-input-description">Descripción: </label>
 			<p><textarea id = "category-input-description" class="form-control" placeholder = "Introduce la descripción de la categoría..." name = "<%=Category.ATR_CATEGORY_DESCRIPTION %>" required></textarea></p>
 						
-            <p><input id = "input-send" type = "submit" class="btn btn-primary" value = "Crear"></p>
+            <p><input id = "input-send-category" type = "submit" class="btn btn-primary" value = "Crear"></p>
         </form>
 
 
 
-        <form id = "update-category-form" class = "form-group" action = "<%= request.getContextPath() %>/Controller" method = "POST" style = "display: 'none';">      
+        <form id = "update-category-form" class = "form-group" style = "display: 'none';">      
 			
 			<label for="category-input-update-id">ID: </label>
 			<p><input id = "category-input-update-id" type = "text" class="form-control" placeholder = "Identificador de la categoría" name = "<%=Category.ATR_CATEGORY_ID %>" readonly></p>
@@ -41,8 +40,8 @@
 			<p><textarea id = "category-input-update-description" class="form-control" placeholder = "Introduce la descripción de la categoría..." name = "<%=Category.ATR_CATEGORY_DESCRIPTION %>" required></textarea></p>
             
             <p>
-                <input id = "input-edit-send" type = "submit" class="btn btn-primary" value = "Editar">
-                <a id = "input-edit-send" class="btn btn-secondary smooth-scroller" href = "#categories-title" role="button" onclick = "cancelUpdateCategory()" style = "margin-left: 10px;">Cancelar</a>
+                <input id = "input-edit-category" type = "submit" class="btn btn-primary" value = "Editar">
+                <a id = "input-cancel-send" class="btn btn-secondary smooth-scroller" href="#" role="button" onclick = "cancelUpdateCategory(); return false; " style = "margin-left: 10px;">Cancelar</a>
             </p>
         </form>
     </div>
@@ -61,28 +60,9 @@
                         <th scope="col">Eliminar</th>
                   	</tr>
                	</thead>
-			   	<tbody>
-			   	
-					<c:forEach var='category' items='${categoriesList}' varStatus=''>
-				   	
-				   		<% Category c = (Category) pageContext.getAttribute("category"); %>
-				   	
-				   		<tr>
-	                     	<td>${category.id}</td>
-	                     	<td>${category.name}</td>
-	                        <td>${category.description}</td>
-	                        <td>
-	                            <button type = "submit" class="btn btn-warning" onclick = "updateCategory(<%=c.toJavaScriptFunction() %>)">Editar</button>
-	                        </td>
-	                        <td>
-								<form action = '<%= request.getContextPath() %>/Controller' method = "POST">
-	                           		<input type = 'hidden' name = '<%=Category.ATR_CATEGORY_ID %>' value = '${category.id}'>
-	                           		<button type = 'submit' class='btn btn-danger'>Eliminar</button>
-	                        	</form>
-	                        </td>
-	                	</tr>
-				   	
-				   	</c:forEach>
+			   	<tbody id="tableBodyCategories">		  				   	
+				   		
+					
 			   	
 				</tbody>
             </table>

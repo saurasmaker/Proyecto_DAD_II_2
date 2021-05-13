@@ -3,16 +3,12 @@ $(document).ready(displayAdminPage);
 
 function displayAdminPage (){
 				
-	//document.getElementById("update-category-form").style.display = "none";
+	document.getElementById("update-category-form").style.display = "none";
 	document.getElementById("update-videogame-form").style.display = "none";
 	  
-	//document.getElementById("videogameimage-title").style.display = "none";
-    //document.getElementById("videogamecategory-title").style.display = "none";
-    //document.getElementById("table-videogameimage").style.display = "none";
-    //document.getElementById("table-videogamescategories").style.display = "none";
-	
-	//document.getElementById("add-videogameimage-form").style.display = "none";
-	//document.getElementById("add-videogamecategory-form").style.display = "none";
+    document.getElementById("videogamecategory-title").style.display = "none";
+    document.getElementById("table-videogamescategories").style.display = "none";
+	document.getElementById("add-videogamecategory-form").style.display = "none";
 }
 
 
@@ -100,10 +96,10 @@ function updateVideogame(id, name, description, releaseDate, stock, purchasePric
 	document.getElementById("create-videogame-form").style.display = "none";
     document.getElementById("update-videogame-form").style.display = "block";
     
-    //document.getElementById("add-videogamecategory-form").style.display = "block";
-    //document.getElementById("videogamecategory-title").style.display = "block";
-    //document.getElementById("table-videogamescategories").style.display = "block";
-    //document.getElementById("input-send-videogamecategory").value = "Anadir categoria a '" + name + "'";
+    document.getElementById("add-videogamecategory-form").style.display = "block";
+    document.getElementById("videogamecategory-title").style.display = "block";
+    document.getElementById("table-videogamescategories").style.display = "block";
+    document.getElementById("input-send-videogamecategory").value = "Anadir categoria a '" + name + "'";
     
     document.getElementById("videogame-input-update-id").value = id;
     document.getElementById("videogame-input-update-name").value = name;
@@ -150,11 +146,7 @@ function cancelUpdateVideogame(){
 	document.getElementById("create-videogame-form").style.display = "block";
     document.getElementById("update-videogame-form").style.display = "none";
     
-    document.getElementById("videogameimage-title").style.display = "none";
     document.getElementById("videogamecategory-title").style.display = "none";
-    document.getElementById("table-videogameimage").style.display = "none";
     document.getElementById("table-videogamescategories").style.display = "none";
-    
-    document.getElementById("add-videogameimage-form").style.display = "none";
     document.getElementById("add-videogamecategory-form").style.display = "none";
 }

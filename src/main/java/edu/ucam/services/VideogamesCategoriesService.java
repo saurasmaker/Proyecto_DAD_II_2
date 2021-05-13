@@ -3,7 +3,7 @@ package edu.ucam.services;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -21,13 +21,13 @@ import org.json.JSONObject;
 
 import edu.ucam.pojos.*;
 
-@Path("/videogames")
-public class VideogamesService {
+@Path("/videogamescategories")
+public class VideogamesCategoriesService {
 	
 	@DefaultValue("") @QueryParam("token") String token;
 	
 	
-	public static ArrayList <Videogame> videogames = new ArrayList<Videogame>();	
+	private static Hashtable <String, VideogameCategory> videogameCategories = new Hashtable<String, VideogameCategory>();	
 	
 	
 	/*
@@ -40,10 +40,10 @@ public class VideogamesService {
 				
 		JSONObject jsonRespuesta = new JSONObject();
 		
-		System.out.println("Running 'getVideogamesList' command...");
-		for(Videogame videogame: videogames){
-			jsonRespuesta.append("videogames", videogame.toJSONObject());	
-			System.out.println(videogame.toJavaScriptFunction());
+		System.out.println("Running 'getVideogamesCategoriesList' command...");
+		for(VideogameCategory videogameCategory: videogameCategories.values()){
+			jsonRespuesta.append("videogamesCategories", videogameCategory.toJSONObject());	
+			System.out.println(videogameCategory.toJavaScriptFunction());
 		}
 		
 		return Response.status(201).entity(jsonRespuesta.toString()).build();
@@ -57,14 +57,13 @@ public class VideogamesService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createVideogame(InputStream incomingData) {
 		
-		/*
-		 * Prepare variables
-		 */
-		Videogame videogame;
+		VideogameCategory videogameCategory;
 		JSONObject jsonReceived;
 		JSONObject jsonResponse = new JSONObject();
 		StringBuilder sb = new StringBuilder();
-			
+		
+		
+		System.out.println("Running 'createVideogameCategory' command...");
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
 			String line = null;
@@ -77,70 +76,41 @@ public class VideogamesService {
 			Response.status(422).entity(jsonResponse.toString()).build();
 		}			
 		jsonReceived = new JSONObject(sb.toString());
-		videogame = new Videogame(jsonReceived);
-		
-		
-		/*
-		 * Add
-		 */
-		if(videogames.size() == 0) {
-			videogame.setId("1");
-			videogames.add(videogame);
-		}
-		else if(videogame.getId().equals("-1")) {
-			videogame.setId(((Integer) (Integer.parseInt(videogames.get(videogames.size()-1).getId()) + 1)).toString());
-			videogames.add(videogame);
-		}
-		
+		videogameCategory = new VideogameCategory(jsonReceived);
 		
 		/*
-		 * Update
+		 * Check if already exists, adding video game in the table if not. 
 		 */
-		else {
-			try {
-				videogames.set(getVideogamePosition(videogame.getId()), videogame);
-			} catch(Exception t) {
-				jsonResponse.append("result", "Error Updating");
-			}
+		if(videogameCategories.get(videogameCategory.getId())==null){
+			
+			videogameCategories.put(videogameCategory.getId(), videogameCategory);
+			jsonResponse.put("videogameCategory", videogameCategory.toJSONObject());
+			
+			System.out.println("VideogameCategory added succesfully.");
+			
+			return Response.status(201).entity(jsonResponse.toString()).build();
+		}else{
+			System.out.println("The videogameCategory already exists");
+			jsonResponse.put("result", "Te videogame already exists");
+			return Response.status(422).entity(jsonResponse.toString()).build();
 		}
-		
-		
-		jsonResponse.put("videogame", videogame.toJSONObject());
-				
-		return Response.status(201).entity(jsonResponse.toString()).build();
 	}
-	
-	
 	
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteVideogames(@PathParam("id") String videogameId) {
+	public Response deleteVideogameCategory(@PathParam("id") String videogameId) {
 		
 		JSONObject jsonRespuesta = new JSONObject();
 		
-		try { videogames.remove(getVideogamePosition(videogameId)); } catch(Exception t) { jsonRespuesta.append("result", "Error Removing"); }
+		System.out.println("Runnning 'deleteVideogameCategory' command...");
+		videogameCategories.remove(videogameId);
 		jsonRespuesta.append("result", "Deleted");	
 
 		return Response.ok()
 				.header("Access-Control-Allow-Origin", "*")
 				.entity(jsonRespuesta.toString())
 				.build();
-	}
-	
-	
-	
-	/*
-	 * Tool methods
-	 */
-	private int getVideogamePosition(String id) {
-		
-		for(int i = 0; i < videogames.size(); ++i)
-			if(videogames.get(i).getId().equals(id)) {
-				return i;
-			}	
-		
-		return -1;
 	}
 
 }

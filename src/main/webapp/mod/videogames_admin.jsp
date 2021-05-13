@@ -17,8 +17,7 @@
 	<div class = "col-lg-4 col-md-6 col-sm-12">
       	<form id = "create-videogame-form" class = "form-group">
 
-			<label for="videogame-input-id">ID: </label>
-			<p><input id = "videogame-input-id" type = "text" class="form-control" placeholder = "ID del Videojuego" name = "<%=Videogame.ATR_VIDEOGAME_ID %>"></p>
+			<p><input id = "videogame-input-id" type = "hidden" value='-1' class="form-control" placeholder = "ID del Videojuego" name = "<%=Videogame.ATR_VIDEOGAME_ID %>"></p>
 				
 			<label for="videogame-input-name">Nombre: </label>
 			<p><input id = "videogame-input-name" type = "text" class="form-control" placeholder = "Introduce el Nombre del Videojuego..." name = "<%=Videogame.ATR_VIDEOGAME_NAME %>" required></p>
@@ -43,7 +42,7 @@
 
 
 
-        <form id = "update-videogame-form" class = "form-group" action = "<%= request.getContextPath() %>/Controller" method = "POST">
+        <form id = "update-videogame-form" class = "form-group">
 
 			<label for="videogame-input-update-id">ID: </label>
 			<p><input id = "videogame-input-update-id" type = "text" class="form-control" placeholder = "ID del Videojuego" name = "<%=Videogame.ATR_VIDEOGAME_ID %>" readonly></p>
@@ -67,8 +66,8 @@
 			<p><input id = "videogame-input-update-rentalprice" type = "number" min = "0" step = "0.01" class="form-control" name = "<%=Videogame.ATR_VIDEOGAME_RENTALPRICE %>" required></p>												
 
             <p>
-                <input id = "input-edit-send" type = "submit" class="btn btn-primary" value = "Editar">
-                <a id = "input-edit-send" class="btn btn-secondary" type = "button" role="button" href = "#videogames-title" onclick = "cancelUpdateVideogame()" style = "margin-left: 10px;">Cancelar</a>
+                <input id = "input-edit-videogame" type = "submit" class="btn btn-primary" value = "Editar">
+                <a id = "input-cancel-send" class="btn btn-secondary" type = "button" role="button" href="#" onclick="cancelUpdateVideogame(); return false;" style = "margin-left: 10px;">Cancelar</a>
             </p>
         </form>
           
@@ -104,6 +103,49 @@
 
 	</div>
 	
-
+	
+	
+	
+	<!-- AÑADIR CATEGORÍA AL VIDEOJUEGO SELECCIONADO -->
+	<div id = "videogamecategory-title" class = "col-12">
+        <h4 class = "" align = "right">Añadir categoría</h4>
+        <hr/>
+    </div>
+    
+	<div class = "col-6">
+	
+		<form id = "add-videogamecategory-form" class = "form-group" action = "<%= request.getContextPath() %>/Controller" method = "POST">		
+        	<label for="videogame-input-category">Elige una categoría: </label>
+			<p><select id = "videogame-input-category" class="form-control" name = "<%=VideogameCategory.ATR_VIDEOGAMESCATEGORIES_CATEGORYID %>">
+			  	<option value="none" selected>Categoría...</option>
+			</select></p>												
+            <p><input id = "input-send-videogamecategory" type = "submit" class="btn btn-primary" value = "Añadir categoria a "></p>
+        </form>
+    </div>
+    
+    
+    <div id = "table-videogamescategories" class = "col-6">
+    	<label>Categorías </label>
+    	<div class = "table-responsive"  style = " max-height: 600px !important; overflow: auto;">
+		 	<table class="table table-striped">
+		 		<tbody>
+		 			<tr>
+		 				<td>category name</td>	
+		 			</tr>
+		 			<tr>
+	 					<td>
+							<form action = "<%= request.getContextPath() %>/Controller" method = "POST">
+                           		<input type="hidden" name = "<%=VideogameCategory.ATR_VIDEOGAMESCATEGORIES_ID %>" value = "">
+                           		<button type="submit" class="btn btn-danger">Eliminar</button>
+                        	</form>
+                        </td>
+		 			</tr>
+		 		</tbody>
+		 	</table>
+	 	</div>
+	</div>
+	
+	
+	
 	
 	<br/>  

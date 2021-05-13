@@ -1,3 +1,29 @@
+function addVideogame(sendInfo){
+
+    $.ajax({
+        url: 'rest/videogames/', 
+        headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+            },
+        type: 'POST', 
+        dataType: "json", 
+        success: function(result) {
+            loadVideogame(
+                result.videogame.id, result.videogame.name, result.videogame.description, result.videogame.releaseDate,
+                result.videogame.stock, result.videogame.purchasePrice, result.videogame.rentalPrice
+            );
+        },
+        error: function(result) {
+        },
+        data:  JSON.stringify(sendInfo)
+            
+    });
+
+}
+
+
+
 
 function loadVideogame(id, name, description, releaseDate, stock, purchasePrice, rentalPrice){
     
@@ -81,14 +107,14 @@ function loadVideogame(id, name, description, releaseDate, stock, purchasePrice,
     
     tbody.appendChild(tr);
 
-    $('#videogames-list-table').append(tr);
 }
 
 
 $(document).ready(function(){
     
+    
 
-    $("#input-send-videogame").click(function(){
+    $("#input-send-videogame").click(function(){ 
         
         var sendInfo = {
             id: $('#videogame-input-id').val(), name: $('#videogame-input-name').val(), description: $('#videogame-input-description').val(),
@@ -96,28 +122,21 @@ $(document).ready(function(){
             rentalPrice: $('#videogame-input-rentalprice').val()
         };
 
-        $.ajax({
-            url: 'rest/videogames/', 
-            headers: { 
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json' 
-                },
-            type: 'POST', 
-            dataType: "json", 
-            success: function(result) {
-                loadVideogame(
-                    result.videogame.id, result.videogame.name, result.videogame.description, result.videogame.releaseDate,
-                    result.videogame.stock, result.videogame.purchasePrice, result.videogame.rentalPrice
-                );
-            },
-            error: function(result) {
-            },
-            data:  JSON.stringify(sendInfo)
-                
-        });
+        addVideogame(sendInfo); 
+    });
+    $("#input-edit-videogame").click(function(){
+        
+        var sendInfo = {
+            id: $('#videogame-input-update-id').val(), name: $('#videogame-input-update-name').val(), description: $('#videogame-input-update-description').val(),
+            releaseDate: $('#videogame-input-update-releasedate').val(), stock: $('#videogame-input-update-stock').val(), purchasePrice: $('#videogame-input-update-purchaseprice').val(),
+            rentalPrice: $('#videogame-input-update-rentalprice').val()
+        };
+
+        addVideogame(sendInfo);
+    
     });
 
-    
+
     $.ajax({
         url: 'rest/videogames/',
         type: 'GET',
